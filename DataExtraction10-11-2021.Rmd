@@ -1,0 +1,64 @@
+---
+title: "DataExtraction"
+author: "HuzaifahZia"
+date: "10/12/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## loading Library
+```{r}
+library(jsonlite)
+library(httpuv)
+library(httr)
+```
+
+## Starting Task of Data Extraction From Github
+```{r}
+oauth_endpoints("github")
+```
+
+## Setting OAuth credentials
+```{r}
+myapp <- oauth_app(appname = "DataExtraction-Task",
+                   key = "5652e47194704e1328ef",
+                   secret = "f2c4ae6163ae98f12eeec71f540caf3c60f85d2e")
+```
+
+
+## Get OAuth credentials
+```{r}
+github_token <- oauth2.0_token(oauth_endpoints("github"), myapp)
+```
+
+## Using the api with token acquired
+```{r}
+gtoken <- config(token = github_token)
+req <- GET("https://api.github.com/users/jtleek/repos", gtoken)
+```
+
+## Take action on http error
+```{r}
+stop_for_status(req)
+```
+
+## Extracting content to variable json
+```{r}
+# Extract content from a request
+json1 = content(req)
+```
+
+## Converting data to json and then from json data to dataframe
+```{r}
+# Convert to a data.frame
+gitDF = jsonlite::fromJSON(jsonlite::toJSON(json1))
+```
+
+##showing data
+```{r}
+#showing first 6 rows of dataframe
+head(gitDF)
+```

@@ -1,0 +1,67 @@
+---
+title: "Stackoverflow"
+author: "HuzaifahZia,Junaid"
+date: "10/12/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## loading libraries
+```{r}
+library(stackr)
+library(dplyr)
+```
+## extracting data
+```{r}
+answers <- stack_users(712603, "answers", num_pages = 10, pagesize = 100)
+```
+## converting data to table data frame
+```{r}
+answers <- tbl_df(answers)
+```
+## displaying data
+```{r}
+answers
+```
+## API functions
+
+#' Query answers from the Stack Exchange API
+#'
+#' Query for a list of answers, or information related to a one or more
+#' specific answers.
+#'
+#' @param id A vector containing one or more answer IDs, or none to query
+#' all answers
+#' @param special If \code{"comments"}, return the comments on the answers
+#' rather than the answers themselves
+#' @template api_options
+#'
+#' @return A \code{data.frame} of answers.
+#'
+#' @template type_answer
+#'
+#' @export
+
+```{r}
+stack_answers <- function(id = NULL, special = NULL, ...) {
+  url <- combine_url("answers", id, special, c("comments", "questions"))
+  stack_GET(url, ...)
+}
+```
+##  Mean accepted
+```{r}
+mean(answers$is_accepted)
+```
+## Top users Tags
+```{r}
+top_tags <- stact_users(712603,"top-answer-tags", pagesize = 100)
+top_tags
+```
+## Graph
+```{r}
+top_tags %>% mutate(tag_name = reorder(tag_name,-answer_score)) %>% head(20) %>%
+  ggplot(aes(tag_name,answer_score))+ geom_bar(stat = "identity")
+```
+
