@@ -1,10 +1,1 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Error</title>
-</head>
-<body>
-<pre>Cannot GET /api/views/k5ry-ef3g/rows.csv</pre>
-</body>
-</html>
+{"errors":[{"title":"Server Error","status":500,"message":"Could not schedule download caching job(s). Service Hosted/Restaurants/MapServer not found "}],"meta":{}}
